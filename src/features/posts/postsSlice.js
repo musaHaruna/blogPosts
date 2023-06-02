@@ -33,12 +33,37 @@ const initialState = [
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {},
+  reducers: {
+    postAdded: {
+      reducer(state, action) {
+        state.push(action.payload);
+      },
+      prepare(title, content, userId) {
+        return {
+          payload: {
+            id: nanoid(),
+            title,
+            content,
+            date: new Date().toISOString(),
+            userId,
+            reactions: {
+              thumbsUp: 0,
+              wow: 0,
+              heart: 0,
+              rocket: 0,
+              coffee: 0,
+            },
+          },
+        };
+      },
+    },
+  },
 });
 
 export const selectAllPosts = (state) => state.posts;
 
 // export const { postAdded, reactionAdded } = postsSlice.actions;
+export const { postAdded } = postsSlice.actions;
 
 // export default postsSlice.reducer;
 
